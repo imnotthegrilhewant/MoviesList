@@ -1,6 +1,6 @@
 package MoviesList;
 
-public class Movie {
+public class Movie extends MediaItem {
     private String date;
     private String title;
     private String type;
@@ -9,6 +9,7 @@ public class Movie {
     private int rating;
     
     public Movie(String date, String title, String type, String genre,String subgenre, int rating){
+        super(title, type);
         this.date = date;
         this.title = title;
         this.type = type;
