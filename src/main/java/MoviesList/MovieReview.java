@@ -14,12 +14,18 @@ public class MovieReview extends javax.swing.JFrame {
         initComponents();
     manager = new MovieManager();
     
-    tableModel = new DefaultTableModel(new Object[]{"Date", "Title", "Type", "Genre", "Rating"}, 0);
+    tableModel = new DefaultTableModel(new Object[]{"Date", "Title", "Type", "Genre", "Sub-Genre", "Rating"}, 0);
     tbMovie.setModel(tableModel);
     }
     
     private void clearFields() {
-        
+        txtDate.setText("");
+        txtTitle.setText("");
+        comboType.setSelectedIndex(0);
+        ComboGenre.setSelectedIndex(0);
+        comboSub.setSelectedIndex(0);
+        jSlider1.setValue(jSlider1.getMinimum());
+        tbMovie.clearSelection();
     }
 
     /**
@@ -47,6 +53,9 @@ public class MovieReview extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbMovie = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
+        jAdd = new javax.swing.JButton();
+        jUpd = new javax.swing.JButton();
+        jDel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -88,52 +97,75 @@ public class MovieReview extends javax.swing.JFrame {
                 "Date", "Title", "Type", "Genre", "Sub-Genre", "Rating"
             }
         ));
+        tbMovie.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbMovieMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbMovie);
 
         jLabel8.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
-        jLabel8.setText("REVIE LIST");
+        jLabel8.setText("REVIEW LIST");
+
+        jAdd.setBackground(new java.awt.Color(51, 255, 51));
+        jAdd.setForeground(new java.awt.Color(0, 0, 0));
+        jAdd.setText("Add");
+        jAdd.addActionListener(this::jAddActionPerformed);
+
+        jUpd.setBackground(new java.awt.Color(102, 102, 255));
+        jUpd.setForeground(new java.awt.Color(0, 0, 0));
+        jUpd.setText("Update");
+        jUpd.addActionListener(this::jUpdActionPerformed);
+
+        jDel.setBackground(new java.awt.Color(255, 102, 102));
+        jDel.setForeground(new java.awt.Color(0, 0, 0));
+        jDel.setText("Delete");
+        jDel.addActionListener(this::jDelActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(196, 196, 196)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(42, 42, 42)
-                                .addComponent(jLabel1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtDate)
-                                    .addComponent(txtTitle)
-                                    .addComponent(comboType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(ComboGenre, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(comboSub, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(79, 79, 79)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(115, 115, 115)
-                                .addComponent(jLabel6))
-                            .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(177, 177, 177)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(35, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 782, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(196, 196, 196)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jAdd)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(42, 42, 42)
+                                        .addComponent(jLabel1))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(82, 82, 82)
+                                                .addComponent(jUpd)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jDel))
+                                            .addComponent(jSlider1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(txtDate, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtTitle, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(comboType, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(ComboGenre, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(comboSub, javax.swing.GroupLayout.Alignment.LEADING, 0, 319, Short.MAX_VALUE)))))
+                            .addComponent(jLabel6)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(353, 353, 353)
+                        .addComponent(jLabel8)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,19 +192,127 @@ public class MovieReview extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(comboSub, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                .addComponent(jLabel8)
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jAdd)
+                    .addComponent(jUpd)
+                    .addComponent(jDel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAddActionPerformed
+        // TODO add your handling code here:
+        try {
+            String date = txtDate.getText().trim();
+            String title = txtTitle.getText().trim();
+            String type = comboType.getSelectedItem().toString();
+            String genre = ComboGenre.getSelectedItem().toString();
+            String subgenre = comboSub.getSelectedItem().toString();
+            int rating = jSlider1.getValue();
+
+            if (date.isEmpty() || title.isEmpty()) {
+                throw new IllegalArgumentException("Date and Title cannot be empty!");
+            }
+
+            // Create Movie object & add to ArrayList (MovieManager)
+            Movie m = new Movie(date, title, type, genre, subgenre, rating);
+            manager.addMovie(m);
+
+            // Add row to JTable view
+            tableModel.addRow(new Object[]{date, title, type, genre, subgenre, rating});
+
+            clearFields();
+            JOptionPane.showMessageDialog(this, "Movie review added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Input Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jAddActionPerformed
+
+    private void tbMovieMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbMovieMouseClicked
+        // TODO add your handling code here:
+        int row = tbMovie.getSelectedRow();
+        if (row != -1) {
+            txtDate.setText(tableModel.getValueAt(row, 0).toString());
+            txtTitle.setText(tableModel.getValueAt(row, 1).toString());
+            comboType.setSelectedItem(tableModel.getValueAt(row, 2).toString());
+            ComboGenre.setSelectedItem(tableModel.getValueAt(row, 3).toString());
+            comboSub.setSelectedItem(tableModel.getValueAt(row, 4).toString());
+            jSlider1.setValue(Integer.parseInt(tableModel.getValueAt(row, 5).toString()));
+        }
+    }//GEN-LAST:event_tbMovieMouseClicked
+
+    private void jUpdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUpdActionPerformed
+        // TODO add your handling code here:
+        int row = tbMovie.getSelectedRow();
+    
+        if (row != -1) {
+            try {
+                String date = txtDate.getText().trim();
+                String title = txtTitle.getText().trim();
+                String type = comboType.getSelectedItem().toString();
+                String genre = ComboGenre.getSelectedItem().toString();
+                String subgenre = comboSub.getSelectedItem().toString();
+                int rating = jSlider1.getValue();
+
+                if (date.isEmpty() || title.isEmpty()) {
+                    throw new IllegalArgumentException("Date and Title cannot be empty!");
+                }
+
+                // Update in ArrayList (MovieManager)
+                manager.updateMovie(row, date, title, type, genre, subgenre, rating);
+
+                // Update in JTable view
+                tableModel.setValueAt(date, row, 0);
+                tableModel.setValueAt(title, row, 1);
+                tableModel.setValueAt(type, row, 2);
+                tableModel.setValueAt(genre, row, 3);
+                tableModel.setValueAt(subgenre, row, 4);
+                tableModel.setValueAt(rating, row, 5);
+
+                clearFields();
+                JOptionPane.showMessageDialog(this, "Movie updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Input Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Select the data you want to update!", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jUpdActionPerformed
+
+    private void jDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDelActionPerformed
+        // TODO add your handling code here:
+        
+        int row = tbMovie.getSelectedRow();
+
+        if (row != -1) {
+            int confirm = JOptionPane.showConfirmDialog(this, 
+                    "Are you sure you want to delete this review?", 
+                    "Confirm Delete", 
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                manager.deleteMovie(row);     // Remove from ArrayList
+                tableModel.removeRow(row);    // Remove from JTable
+                clearFields();
+                JOptionPane.showMessageDialog(this, "Movie deleted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Select the data you want to delete!", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jDelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -191,7 +331,7 @@ public class MovieReview extends javax.swing.JFrame {
                 }
             }
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MovieReview.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -203,6 +343,8 @@ public class MovieReview extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> ComboGenre;
     private javax.swing.JComboBox<String> comboSub;
     private javax.swing.JComboBox<String> comboType;
+    private javax.swing.JButton jAdd;
+    private javax.swing.JButton jDel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -213,6 +355,7 @@ public class MovieReview extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSlider jSlider1;
+    private javax.swing.JButton jUpd;
     private javax.swing.JTable tbMovie;
     private javax.swing.JTextField txtDate;
     private javax.swing.JTextField txtTitle;
